@@ -297,6 +297,13 @@ app.use('/graphql', graphqlExpress(() => {
 Now only clients that opt-in to crunched payloads via the `?crunch` query
 parameter will receive them.
 
+If you want to enable additional Apollo GraphQL optimizations, taking advantage
+of objects with `__typename` and `id` fields, you can enable that by calling:
+
+```js
+response.data = crunch(response.data, {mergeGraphQL: true});
+```
+
 ### Client-side
 
 On the client, we uncrunch the server response before the GraphQL client
