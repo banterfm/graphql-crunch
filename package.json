@@ -1,0 +1,34 @@
+{
+  "name": "graphql-crunch",
+  "version": "1.0.0",
+  "description": "Normalizes GraphQL responses by reducing duplication, resulting in smaller payloads and faster JSON parsing.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "watch": "jest --watchAll --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/banterfm/graphql-crunch.git"
+  },
+  "keywords": [
+    "graphql",
+    "apollo",
+    "crunch",
+    "compress",
+    "deduplicator",
+    "normalize"
+  ],
+  "author": "Banter.fm",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/banterfm/graphql-crunch/issues"
+  },
+  "homepage": "https://github.com/banterfm/graphql-crunch#readme",
+  "devDependencies": {
+    "jest": "^22.4.0"
+  },
+  "jest": {
+    "testMatch": [ "**/test/**/*.js" ]
+  }
+}
