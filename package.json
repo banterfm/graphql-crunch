@@ -1,6 +1,6 @@
 {
   "name": "graphql-crunch",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Normalizes GraphQL responses by reducing duplication, resulting in smaller payloads and faster JSON parsing.",
   "main": "src/index.js",
   "scripts": {
