@@ -6,8 +6,8 @@ module.exports = function uncrunch(values) {
 
   values.forEach(value =>
     expanded.push(isArray(value) ? value.map(lookup)
-                 : isObject(value) ? mapObject(value, lookup)
-                 : value)
+                 :isObject(value) ? mapObject(value, lookup)
+                 :value)
   );
 
   return expanded[expanded.length - 1];
