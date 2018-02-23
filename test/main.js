@@ -44,3 +44,14 @@ graphQLCases.forEach(([description, uncrunched, crunched, roundTripped]) => {
     expect(uncrunch(crunched)).toEqual(roundTripped);
   });
 });
+
+
+test('Crunching self-referential object', () => {
+  const obj = {__typename: 'Foo', id: 0, ref: {__typename: 'Foo', id: 0}};
+
+  const crunched = crunch(obj, {mergeGraphQL: true});
+  expect(crunched).toEqual(['Foo', 0, {__typename: 0, id: 1, ref: 2}]);
+
+  const uncrunched = uncrunch(crunched);
+  expect(uncrunched).toBe(uncrunched.ref);
+});
