@@ -2,7 +2,7 @@
 
 [![NPM version](http://img.shields.io/npm/v/graphql-crunch.svg?style=flat-square)](https://www.npmjs.org/package/graphql-crunch)
 
-Optimizes GraphQL responses by minimizing duplication and improving
+Optimizes JSON responses by minimizing duplication and improving
 compressibility.
 
 On [Banter.fm](https://banter.fm), we see a 76% reduction in raw JSON size and
@@ -14,19 +14,18 @@ JSON parsing on mobile.
 * [How does it work?](#how-does-it-work)
 * [Motivation](#motivation)
 * [Example](#example)
+  * [Small Example](#small-example)
+  * [Large Example](#large-example)
 * [Usage](#usage)
   * [Server-side](#server-side)
   * [Client-side](#client-side)
 
 ## Client support
 
-`graphql-crunch` is client agnostic, though we provide examples for
-[`apollo-client`](https://github.com/apollographql/apollo-client).
-
-The library removes duplication in any JSON data structure, so can benefit
-non-graphql payloads as well. Objects that have a `__typename` and
-`id` field will (optionally) be handled specially to further reduce
-duplication.
+`graphql-crunch` is client agnostic and can be used anywhere that sends or
+receives JSON. We provide examples for integration with
+[`apollo-client`](https://github.com/apollographql/apollo-client) as we use
+this in a GraphQL environment.
 
 ## Installation
 
@@ -45,62 +44,34 @@ $ yarn add graphql-crunch
 
 ## How does it work?
 
-We flatten the object hierarchy into an array using a post-order traversal
-of the object graph. As we traverse, if we come across a value that we've seen
-before, including arrays and objects, we replace it with a reference to it's earlier
-occurence in the traversal. Values are only ever present in the array once.
+We flatten the object hierarchy into an array using a post-order traversal of
+the object graph. As we traverse we efficiently check if we've come across a
+value before, including arrays and objects, and replace it with a reference to
+it's earlier occurence if we've seen it. Values are only ever present in the
+array once.
 
-If the `mergeGraphQL` option is set to `true` (default is `false`), we will
-also merge fields from GraphQL objects when possible to do so. Meaning that
-we'll combine:
-
-``` json
-  [{"__typename": "User", "id": 5, "name": "Robert"},
-   {"__typename": "User", "id": 5, "age": 20}]
-```
-
-into:
-
-``` json
-  [{"__typename": "User", "id": 5, "name": "Robert", "age": 20},
-   {"__typename": "User", "id": 5, "name": "Robert", "age": 20}]
-```
-
-This allows us to perform further optimizations for reducing payload size.
-
-Note: If two graphql objects have the same shape, but have fields with the same
-name and different values, one object will not override the values in another.
-For example:
-
-``` json
-  [{"__typename": "User", "id": 5, "name": "Robert", "age": 20},
-   {"__typename": "User", "id": 5, "name": "Barbara"}]
-```
-
-will uncrunch into:
-
-``` json
-  [{"__typename": "User", "id": 5, "name": "Robert", "age": 20},
-   {"__typename": "User", "id": 5, "name": "Barbara", "age": 20}]
-```
+### Note: Crunching and uncrunching is an entirely lossless process. The final payload exactly matches the original.
 
 ## Motivation
 
 Large JSON blobs can be slow to parse on some mobile platforms, especially
 older Android phones, so we set out to improve that. At the same time we also
-wound up making the payloads more amenable to gzip compression too. GraphQL
-responses tend to have a lot of duplication leading to huge payload sizes.
-
-There are other projects that exist to reduce the size of GraphQL responses but
-they only handle very specific use cases and the net impact on our payloads was
-minimal. This is why we created a general purpose JSON normalization library
-with special optimizations for GraphQL.
+wound up making the payloads more amenable to gzip compression too. GraphQL and
+REST-ful API responses tend to have a lot of duplication leading to huge
+payload sizes.
 
 ## Example
 
-In this example, we use the [SWAPI GraphQL demo](http://graphql.org/swapi-graphql).
+In these examples, we use the [SWAPI GraphQL
+demo](http://graphql.org/swapi-graphql).
 
-Using this [query](http://graphql.org/swapi-graphql/?query=%7B%0A%20%20allPeople(first%3A%202)%20%7B%0A%20%20%20%20people%20%7B%0A%20%20%20%20%20%20name%0A%20%20%20%20%20%20gender%0A%20%20%20%20%20%20filmConnection(first%3A%202)%20%7B%0A%20%20%20%20%20%20%20%20films%20%7B%0A%20%20%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20%20%20characterConnection(first%3A%202)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20characters%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20gender%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D&operationName=null):
+### Small Example
+
+Using this
+[query](http://graphql.org/swapi-graphql/?query=%7B%0A%20%20allPeople(first%3A%202)%20%7B%0A%20%20%20%20people%20%7B%0A%20%20%20%20%20%20name%0A%20%20%20%20%20%20gender%0A%20%20%20%20%20%20filmConnection(first%3A%202)%20%7B%0A%20%20%20%20%20%20%20%20films%20%7B%0A%20%20%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20%20%20characterConnection(first%3A%202)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20characters%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20gender%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D&operationName=null)
+we'll fetch the first 2 people and their first 2 films and the first 2
+characters in each of those films. We limit the connections to the first two
+items to keep the payload small:
 
 ```graphql
   {
@@ -241,9 +212,72 @@ After we crunch it, we get:
 }
 ```
 
-As you can see, the transformed payload is substantially smaller.
-When the client receives this, we simply uncrunch it and get back the original
-expanded version for the client to handle.
+The transformed payload is substantially smaller. After converting both
+payloads to JSON (with formatting removed), the transformed payload is 49%
+fewer bytes.
+
+When the client receives this, we simply uncrunch it and get back the exact
+original version for the client to handle.
+
+### Large Example
+
+In real-world scenarios, we'll generally want more attributes from our models,
+as well as connections that have more than two items in them. Here's a [query](http://graphql.org/swapi-graphql/?query=%7B%0A%20%20allPeople%20%7B%0A%20%20%20%20people%20%7B%0A%20%20%20%20%20%20name%0A%20%20%20%20%20%20birthYear%0A%20%20%20%20%20%20eyeColor%0A%20%20%20%20%20%20gender%0A%20%20%09%09hairColor%0A%20%20%20%20%20%20height%0A%20%20%20%20%20%20mass%0A%20%20%20%20%20%20skinColor%0A%20%20%20%20%20%20homeworld%20%7B%0A%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20population%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20filmConnection%20%7B%0A%20%20%20%20%20%20%20%20films%20%7B%0A%20%20%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20%20%20characterConnection%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20characters%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20birthYear%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20eyeColor%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20gender%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20hairColor%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20height%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20mass%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20skinColor%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20homeworld%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20population%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D&operationName=null)
+similar to the one above except we don't limit the size of the connections and
+we request a standard set of selections on `Person` objects.
+
+```graphql
+{
+  allPeople {
+    people {
+      name
+      birthYear
+      eyeColor
+      gender
+      hairColor
+      height
+      mass
+      skinColor
+      homeworld {
+        name
+        population
+      }
+      filmConnection {
+        films {
+          title
+          characterConnection {
+            characters {
+              name
+              birthYear
+              eyeColor
+              gender
+              hairColor
+              height
+              mass
+              skinColor
+              homeworld {
+                name
+                population
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+The resulting response from this query is roughly 1MB of JSON (989,946 bytes),
+but with tons of duplication. Here is how crunching impacts the payload size:
+
+|                      | Raw       | Crunched | Improvement |
+|----------------------|-----------|----------|-------------|
+| Size                 | 989,946B  | 28,220B  | 97.1%       |
+| GZip'd Size          | 22,240B   | 5,069B   | 77.2%       |
+
+This is an admittedly extreme result, but highlights the potential for
+crunching payloads with large amounts of duplication.
 
 ## Usage
 
