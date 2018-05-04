@@ -3,6 +3,7 @@
   "version": "1.1.2",
   "description": "Normalizes GraphQL responses by reducing duplication, resulting in smaller payloads and faster JSON parsing.",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "test": "jest --coverage",
     "watch": "jest --watchAll --coverage"
