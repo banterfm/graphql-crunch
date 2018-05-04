@@ -26,8 +26,10 @@ function insert(value, index, values) {
 }
 
 module.exports = function crunch(data) {
-  const index = new Map();
   const values = [];
-  flatten(data, index, values);
+  if (typeof data !== 'undefined') {
+    const index = new Map();
+    flatten(data, index, values);
+  }
   return values;
 };
