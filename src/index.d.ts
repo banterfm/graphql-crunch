@@ -1,9 +1,5 @@
 declare module 'graphql-crunch' {
-  export type Uncrunched =
-    | { [key: string]: any }
-    | Array<{ [key: string]: any }>
-
-  export type Crunched = Array<
+  export type CrunchedData = Array<
     | null
     | number
     | string
@@ -12,7 +8,7 @@ declare module 'graphql-crunch' {
     | number[]
   >
 
-  export function crunch(data: Uncrunched): Crunched
+  export function crunch(data: any): CrunchedData
 
-  export function uncrunch(data: Crunched): Uncrunched
+  export function uncrunch(data: CrunchedData): any
 }
