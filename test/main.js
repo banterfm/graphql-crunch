@@ -1,6 +1,7 @@
 const { crunch, uncrunch } = require('../src');
 
 const baseCases = [
+  ['undefined', undefined, []],
   ['null primitive', null, [null]],
   ['number primitive', 0, [0]],
   ['boolean primitive', true, [true]],

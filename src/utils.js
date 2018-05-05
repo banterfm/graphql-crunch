@@ -4,6 +4,10 @@ function isObject(value) {
   return (typeof value === 'object' && value !== null);
 }
 
+function isUndefined(value) {
+  return value === undefined;
+}
+
 function mapObject(object, fn) {
   return Object.keys(object)
                .reduce((acc, key) => {
@@ -17,4 +21,4 @@ function toKey(value) {
                          : JSON.stringify(value);
 }
 
-module.exports = {isArray, isObject, mapObject, toKey};
+module.exports = {isArray, isObject, isUndefined, mapObject, toKey};

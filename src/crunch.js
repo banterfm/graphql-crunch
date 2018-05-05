@@ -1,5 +1,6 @@
 const { isArray
       , isObject
+      , isUndefined
       , mapObject
       , filterObject
       , toKey
@@ -26,6 +27,9 @@ function insert(value, index, values) {
 }
 
 module.exports = function crunch(data) {
+  if (isUndefined(data)) {
+    return [];
+  }
   const index = new Map();
   const values = [];
   flatten(data, index, values);
