@@ -300,7 +300,7 @@ app.use('/graphql', graphqlExpress(() => {
   return {
     formatResponse: (response) => {
       if (response.data && !response.data.__schema) {
-        reponse.data = crunch(response.data);
+        response.data = crunch(response.data);
       }
 
       return response;
@@ -315,11 +315,11 @@ To maintain compatibility with clients that aren't expecting crunched payloads,
 we recommend conditioning the crunch on a query param, like so:
 
 ```js
-app.use('/graphql', graphqlExpress(() => {
+app.use('/graphql', graphqlExpress((request) => {
   return {
     formatResponse: (response) => {
       if(request.query.crunch && response.data && !response.data.__schema) {
-        reponse.data = crunch(response.data);
+        response.data = crunch(response.data);
       }
 
       return response;
