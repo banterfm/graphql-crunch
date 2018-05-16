@@ -299,7 +299,7 @@ const app = express();
 app.use('/graphql', graphqlExpress(() => {
   return {
     formatResponse: (response) => {
-      if (response.data && !response.data.__schema) {
+      if (response.data) {
         response.data = crunch(response.data);
       }
 
