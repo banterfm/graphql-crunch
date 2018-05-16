@@ -299,7 +299,7 @@ const app = express();
 app.use('/graphql', graphqlExpress(() => {
   return {
     formatResponse: (response) => {
-      if (response.data && !response.data.__schema) {
+      if (response.data) {
         response.data = crunch(response.data);
       }
 
@@ -318,7 +318,7 @@ we recommend conditioning the crunch on a query param, like so:
 app.use('/graphql', graphqlExpress((request) => {
   return {
     formatResponse: (response) => {
-      if(request.query.crunch && response.data && !response.data.__schema) {
+      if(request.query.crunch && response.data) {
         response.data = crunch(response.data);
       }
 
