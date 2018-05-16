@@ -318,7 +318,7 @@ we recommend conditioning the crunch on a query param, like so:
 app.use('/graphql', graphqlExpress((request) => {
   return {
     formatResponse: (response) => {
-      if(request.query.crunch && response.data) {
+      if (request.query.crunch && response.data) {
         response.data = crunch(response.data);
       }
 
