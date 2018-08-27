@@ -13,11 +13,11 @@ function isUndefined(value) {
 }
 
 function mapObject(object, fn) {
-  return Object.keys(object)
-               .reduce((acc, key) => {
-                 acc[key] = fn(object[key], key, object);
-                 return acc;
-               }, {});
+  const acc = {};
+  for(let key in object) {
+    acc[key] = fn(object[key], key, object);
+  }
+  return acc;
 }
 
 function toKey(value) {
