@@ -1,6 +1,6 @@
 const { readFileSync } = require('fs');
 const { join } = require('path');
-const { crunch, uncrunch } = require('../../src');
+const { crunch, uncrunch } = require('../src');
 
 const blobs = {
   "Large SWAPI": join(__dirname, './json/swapi.json'),
@@ -9,9 +9,15 @@ const blobs = {
   "Businesses": join(__dirname, './json/businesses.json'),
 }
 
+Object.keys(blobs).forEach(blob =>
+  test(`GraphQL 1.0 - Round-tripping ${blob} blob.`, () => {
+    const content = JSON.parse(readFileSync(blobs[blob]));
+    expect(uncrunch(crunch(content))).toEqual(content);
+  })
+);
 
 Object.keys(blobs).forEach(blob =>
-  test(`Round-tripping ${blob} blob.`, () => {
+  test(`GraphQL 2.0 - Round-tripping ${blob} blob.`, () => {
     const content = JSON.parse(readFileSync(blobs[blob]));
     expect(uncrunch(crunch(content,2))).toEqual(content);
   })
