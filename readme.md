@@ -221,8 +221,8 @@ original version for the client to handle.
 
 ### Large Example
 
-In real-world scenarios, we'll generally want more attributes from our models,
-as well as connections that have more than two items in them. Here's a [query](http://graphql.org/swapi-graphql/?query=%7B%0A%20%20allPeople%20%7B%0A%20%20%20%20people%20%7B%0A%20%20%20%20%20%20name%0A%20%20%20%20%20%20birthYear%0A%20%20%20%20%20%20eyeColor%0A%20%20%20%20%20%20gender%0A%20%20%09%09hairColor%0A%20%20%20%20%20%20height%0A%20%20%20%20%20%20mass%0A%20%20%20%20%20%20skinColor%0A%20%20%20%20%20%20homeworld%20%7B%0A%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20population%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20filmConnection%20%7B%0A%20%20%20%20%20%20%20%20films%20%7B%0A%20%20%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20%20%20characterConnection%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20characters%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20birthYear%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20eyeColor%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20gender%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20hairColor%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20height%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20mass%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20skinColor%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20homeworld%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20population%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D&operationName=null)
+In real-world scenarios, we'll have modularized our shcema with fragments and have
+as well as connections that have more than two items in them. Here's a [query](https://graphql.org/swapi-graphql/?query=%7B%0A%20%20allPeople%20%7B%0A%20%20%20%20people%20%7B%0A%20%20%20%20%20%20...PersonFragment%0A%20%20%20%20%20%20filmConnection%20%7B%0A%20%20%20%20%20%20%20%20films%20%7B%0A%20%20%20%20%20%20%20%20%20%20...FilmFragment%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%0A%0Afragment%20PersonFragment%20on%20Person%20%7B%0A%20%20name%0A%20%20birthYear%0A%20%20eyeColor%0A%20%20gender%0A%20%20hairColor%0A%20%20height%0A%20%20mass%0A%20%20skinColor%0A%20%20homeworld%20%7B%0A%20%20%20%20name%0A%20%20%20%20population%0A%20%20%7D%0A%7D%0A%0Afragment%20FilmFragment%20on%20Film%20%7B%0A%20%20title%0A%20%20characterConnection%20%7B%0A%20%20%20%20characters%20%7B%0A%20%20%20%20%20%20...PersonFragment%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%0A)
 similar to the one above except we don't limit the size of the connections and
 we request a standard set of selections on `Person` objects.
 
@@ -230,39 +230,36 @@ we request a standard set of selections on `Person` objects.
 {
   allPeople {
     people {
-      name
-      birthYear
-      eyeColor
-      gender
-      hairColor
-      height
-      mass
-      skinColor
-      homeworld {
-        name
-        population
-      }
+      ...PersonFragment
       filmConnection {
         films {
-          title
-          characterConnection {
-            characters {
-              name
-              birthYear
-              eyeColor
-              gender
-              hairColor
-              height
-              mass
-              skinColor
-              homeworld {
-                name
-                population
-              }
-            }
-          }
+          ...FilmFragment
         }
       }
+    }
+  }
+}
+
+fragment PersonFragment on Person {
+  name
+  birthYear
+  eyeColor
+  gender
+  hairColor
+  height
+  mass
+  skinColor
+  homeworld {
+    name
+    population
+  }
+}
+
+fragment FilmFragment on Film {
+  title
+  characterConnection {
+    characters {
+      ...PersonFragment
     }
   }
 }
@@ -288,48 +285,53 @@ can supply a custom `formatResponse` function. We use this to crunch the `data`
 field of the `response` before sending it over the wire.
 
 ```js
-import express from 'express';
-import { graphqlExpress } from 'apollo-server-express';
-import { crunch } from 'graphql-crunch';
+import { ApolloServer } from 'apollo-server';
 
-const SERVICE_PORT = 3000;
-
-const app = express();
-
-app.use('/graphql', graphqlExpress(() => {
-  return {
-    formatResponse: (response) => {
-      if (response.data) {
-        response.data = crunch(response.data);
-      }
-
-      return response;
+const server = new ApolloServer({
+  // schema, context, etc...
+  formatResponse: (response) => {
+    if(response.data) {
+      response.data = crunch(response.data);
     }
-  };
-}));
+    return response;
+  },
+});
 
-app.listen(SERVICE_PORT);
+server.listen({port: 80});
 ```
 
 To maintain compatibility with clients that aren't expecting crunched payloads,
 we recommend conditioning the crunch on a query param, like so:
 
 ```js
-app.use('/graphql', graphqlExpress((request) => {
-  return {
-    formatResponse: (response) => {
-      if(request.query.crunch && response.data) {
-        response.data = crunch(response.data);
-      }
+import url from 'url';
+import querystring from 'querystring';
+import { ApolloServer } from 'apollo-server';
 
-      return response;
+const server = new ApolloServer({
+  // schema, context, etc...
+  formatResponse: (response, options) => {
+    const parsed = url.parse(options.request.url);
+    const query = querystring.parse(parsed.query);
+
+    if(query.crunch && response.data) {
+      const version = parseInt(query.crunch) || 1;
+      response.data = crunch(response.data, version);
     }
-  };
-}));
+
+    return response;
+  },
+});
+
+server.listen({port: 80});
 ```
 
-Now only clients that opt-in to crunched payloads via the `?crunch` query
+Now only clients that opt-in to crunched payloads via the `?crunch=2` query
 parameter will receive them.
+
+Your client can specify the version of the crunch format to use in the query
+parameter. If the version isn't specified, or an unknown version is supplied,
+we default to v1.0.
 
 ### Client-side
 

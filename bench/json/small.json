@@ -1,0 +1,84 @@
+{
+  "data": {
+    "allPeople": {
+      "people": [
+        {
+          "name": "Luke Skywalker",
+          "gender": "male",
+          "filmConnection": {
+            "films": [
+              {
+                "title": "A New Hope",
+                "characterConnection": {
+                  "characters": [
+                    {
+                      "name": "Luke Skywalker",
+                      "gender": "male"
+                    },
+                    {
+                      "name": "C-3PO",
+                      "gender": "n/a"
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "The Empire Strikes Back",
+                "characterConnection": {
+                  "characters": [
+                    {
+                      "name": "Luke Skywalker",
+                      "gender": "male"
+                    },
+                    {
+                      "name": "C-3PO",
+                      "gender": "n/a"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "C-3PO",
+          "gender": "n/a",
+          "filmConnection": {
+            "films": [
+              {
+                "title": "A New Hope",
+                "characterConnection": {
+                  "characters": [
+                    {
+                      "name": "Luke Skywalker",
+                      "gender": "male"
+                    },
+                    {
+                      "name": "C-3PO",
+                      "gender": "n/a"
+                    }
+                  ]
+                }
+              },
+              {
+                "title": "The Empire Strikes Back",
+                "characterConnection": {
+                  "characters": [
+                    {
+                      "name": "Luke Skywalker",
+                      "gender": "male"
+                    },
+                    {
+                      "name": "C-3PO",
+                      "gender": "n/a"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

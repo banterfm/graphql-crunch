@@ -1,12 +1,13 @@
 {
   "name": "graphql-crunch",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "description": "Normalizes GraphQL responses by reducing duplication, resulting in smaller payloads and faster JSON parsing.",
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "scripts": {
     "test": "jest --coverage",
-    "watch": "jest --watchAll --coverage"
+    "watch": "jest --watchAll --coverage",
+    "bench": "node bench/bench.js"
   },
   "repository": {
     "type": "git",
@@ -27,7 +28,9 @@
   },
   "homepage": "https://github.com/banterfm/graphql-crunch#readme",
   "devDependencies": {
-    "jest": "^22.4.0"
+    "jest": "^22.4.0",
+    "msgpack-lite": "^0.1.26",
+    "transit-js": "^0.8.861"
   },
   "jest": {
     "testMatch": [
