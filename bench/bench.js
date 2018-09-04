@@ -71,10 +71,11 @@ for(let key in blobs) {
   for(let key in encoders) {
     const {encode, decode} = encoders[key];
     const serialized = encode(payload);
+    const zipped = gzipSync(serialized);
 
     result[key] = {
       "Raw (bytes)": serialized.length,
-      "GZip'd (bytes)": gzipSync(serialized).length,
+      "GZip'd (bytes)": zipped.length,
       "Serialized (ms)": timeFn(encode, payload, iterations),
       "Deserialized (ms)": timeFn(decode, serialized, iterations),
     };
@@ -84,6 +85,3 @@ for(let key in blobs) {
   console.log(`${key}`);
   console.table(result);
 }
-
-// Drop compaction?
-// Fix ordered set to verify equality
