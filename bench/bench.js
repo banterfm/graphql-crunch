@@ -21,7 +21,7 @@ const blobs = {
   // From https://data.oregon.gov/api/views/i8h7-mn6v/rows.json
   "Businesses": join(__dirname, './json/businesses.json'),
 
-  "Banter Feed": join(__dirname, './json/feed.json'),
+  //"Banter Feed": join(__dirname, './json/feed.json'),
 };
 
 const encoders = {
