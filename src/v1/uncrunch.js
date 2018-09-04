@@ -1,4 +1,4 @@
-const { isArray, isObject, mapObject } = require('./utils');
+const { isContainer, map } = require('../utils');
 
 module.exports = function uncrunch(values) {
   const expanded = [];
@@ -7,9 +7,7 @@ module.exports = function uncrunch(values) {
   expanded.length = values.length; // Hint at array length for perf boost.
   for(let i = 0; i < values.length; i++) {
     const value = values[i];
-    expanded[i] = isArray(value) ? value.map(lookup)
-                : isObject(value) ? mapObject(value, lookup)
-                : value;
+    expanded[i] = isContainer(value) ? map(value, lookup) : value;
   }
 
   return expanded[expanded.length - 1];

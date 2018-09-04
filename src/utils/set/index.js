@@ -1,10 +1,5 @@
-const { isArray, isObject, forEach } = require('./containers');
-
-// Note: `hash` will only be called with arrays or objects.
-function hash(value) {
-  return isArray(value) ? JSON.stringify(value) :
-         JSON.stringify(value, Object.keys(value).sort());
-}
+const { hash } = require('./hash');
+const { eq } = require('./eq');
 
 function CountedOrderedSet() {
   const index = {};
@@ -15,15 +10,25 @@ function CountedOrderedSet() {
     const key = hash(value);
 
     if (!(key in index)) {
-      index[key] = values.length;
+      index[key] = [[value, values.length]];
       values.push(value);
       counts.push(1);
       return values.length - 1;
     }
 
-    const offset = index[key];
-    counts[offset] += 1;
-    return offset;
+    const entries = index[key];
+    const entry = entries.find(x => eq(x[0], value));
+
+    if (entry != null) {
+      const offset = entry[1];
+      counts[offset] += 1;
+      return offset;
+    }
+
+    index[key].push([value, values.length]);
+    values.push(value);
+    counts.push(1);
+    return values.length - 1;
   };
 
   // We directly expose some of the internal data structures as an optimization

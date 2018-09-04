@@ -1,4 +1,4 @@
-const { isContainer, isReference, map, decode } = require('./utils');
+const { isContainer, isReference, map, decode } = require('../utils');
 
 function expand(data, expanded) {
   const recurse = (data => expand(data, expanded));

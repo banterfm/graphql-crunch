@@ -5,7 +5,7 @@ const { isContainer
       , encode
       , decode
       , CountedOrderedSet
-      } = require('./utils');
+      } = require('../utils');
 
 function flatten(data, set) {
   if (!isContainer(data)) {
