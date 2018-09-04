@@ -315,7 +315,8 @@ const server = new ApolloServer({
     const query = querystring.parse(parsed.query);
 
     if(query.crunch && response.data) {
-      response.data = crunch(response.data);
+      const version = parseInt(query.crunch) || 1;
+      response.data = crunch(response.data, version);
     }
 
     return response;
@@ -325,8 +326,12 @@ const server = new ApolloServer({
 server.listen({port: 80});
 ```
 
-Now only clients that opt-in to crunched payloads via the `?crunch` query
+Now only clients that opt-in to crunched payloads via the `?crunch=2` query
 parameter will receive them.
+
+Your client can specify the version of the crunch format to use in the query
+parameter. If the version isn't specified, or an unknown version is supplied,
+we default to v1.0.
 
 ### Client-side
 
