@@ -43,28 +43,30 @@ function hash(value) {
     return intHash(value);
   }
 
+  let code = 0;
+
   if (typeof(value) === 'string') {
-    let code = 0;
+
     const upper = Math.min(value.length, MAX_STRING_LEN);
     for (let i = 0; i < upper; i++) {
-      code += (intHash(i) ^ intHash(value.charCodeAt(i))) % MAX_HASHCODE;
+      code += intHash(i) ^ intHash(value.charCodeAt(i));
     }
-    return code;
-  }
 
-  if (isArray(value)) {
-    let code = 0;
+  } else if (isArray(value)) {
+
     for(let i = 0; i < value.length; i++) {
-      code += (intHash(i) ^ hash(value[i])) % MAX_HASHCODE;
+      code += intHash(i) ^ hash(value[i]);
     }
-    return code;
+
+  } else {
+
+    for (const key in value) {
+      code += hash(key) ^ hash(value[key]);
+    }
+
   }
 
-  let code = 0;
-  for (const key in value) {
-    code += (hash(key) ^ hash(value[key])) % MAX_HASHCODE;
-  }
-  return code;
+  return code % MAX_HASHCODE;
 
 }
 
