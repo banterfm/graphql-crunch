@@ -311,7 +311,7 @@ import { ApolloServer } from 'apollo-server';
 const server = new ApolloServer({
   // schema, context, etc...
   formatResponse: (response, options) => {
-    const parsed = url.parse(options.request.url);
+    const parsed = url.parse(options.context.request.url);
     const query = querystring.parse(parsed.query);
 
     if(query.crunch && response.data) {
