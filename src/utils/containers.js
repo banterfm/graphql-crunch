@@ -1,6 +1,6 @@
 const isArray = Array.isArray;
 
-const isObject = value => (typeof value === 'object' && value !== null && !(value instanceof Date));
+const isObject = value => (typeof value === 'object' && value !== null && !isArray(value));
 
 const isContainer = value => isArray(value) || isObject(value);
 
