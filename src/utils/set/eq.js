@@ -7,11 +7,10 @@ function eq(a, b) {
     return arrayEq(a, b);
   }
 
-  if (aIsArray || bIsArray) {
-    return false;
-  }
-
   if (isObject(a) && isObject(b)) {
+    if (aIsArray || bIsArray) {
+      return false;
+    }
     return objectEq(a, b);
   }
 
