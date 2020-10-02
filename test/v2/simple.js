@@ -17,6 +17,7 @@ const baseCases = [
   ['multi-item repeated object', {a: null, b: null, c: null, d: null}, {version: 2, crunched: [{a: null, b: null, c: null, d: null}]}],
   ['complex array', [{a: true, b: [1, 2, 3]}, [1,2,3]], {version: 2, crunched: [[3, 5, 7], 0, [{a: true, b: 0}, 0]]}],
   ['complex object', {a: true, b: [1, 2, 3], c: {a: true, b: [1,2,3]}}, {version: 2, crunched: [[3, 5, 7], 0, {a: true, b: 0, c: {a: true, b: 0}}]}],
+  ['empty object/array', {a: {}, b: []}, {version: 2, crunched: [0, 0, {a: {}, b: []}]}],
 ];
 
 baseCases.forEach(([description, uncrunched, crunched]) => {
