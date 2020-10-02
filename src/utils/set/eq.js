@@ -1,20 +1,9 @@
 const { isArray, isObject } = require('../containers');
 
 function eq(a, b) {
-  let aIsArray = isArray(a);
-  let bIsArray = isArray(b);
-  if (aIsArray && bIsArray) {
-    return arrayEq(a, b);
-  }
-
-  if (isObject(a) && isObject(b)) {
-    if (aIsArray || bIsArray) {
-      return false;
-    }
-    return objectEq(a, b);
-  }
-
-  return a === b;
+  return isArray(a) && isArray(b) ? arrayEq(a, b)
+       : isObject(a) && isObject(b) ? objectEq(a, b)
+       : a === b;
 }
 
 function arrayEq(a, b) {
