@@ -1,4 +1,4 @@
-name: Test
+name: Build, Test, Deploy
 
 on:
   push:
@@ -7,21 +7,24 @@ on:
       - created
 
 jobs:
-  setup:
+  build-test-deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup node
+      uses: actions/setup-node@v1
       with:
         node-version: '12.x'
+        registry-url: 'https://registry.npmjs.org'
 
-  dependencies:
-    needs: setup
-    steps:
-    - run: npm install -g yarn
-    - run: yarn install
+    - name: Install yarn
+      run: npm install -g yarn
 
-  test:
-    needs: dependencies
-    steps:
-    - run: yarn test
+    - name: Install deps
+      run: yarn install
+
+    - name: Run tests
+      run: yarn test
