@@ -17,11 +17,13 @@ jobs:
 
   dependencies:
     needs: setup
+    runs-on: ubuntu-latest
     steps:
     - run: npm install -g yarn
     - run: yarn install
 
   test:
     needs: dependencies
+    runs-on: ubuntu-latest
     steps:
     - run: yarn test
