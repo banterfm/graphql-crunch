@@ -18,6 +18,7 @@ const baseCases = [
   ['complex array', [{a: true, b: [1, 2, 3]}, [1,2,3]], [true, 1, 2, 3, [1, 2, 3], {a: 0, b: 4}, [5, 4]]],
   ['complex object', {a: true, b: [1, 2, 3], c: {a: true, b: [1,2,3]}}, [true, 1, 2, 3, [1, 2, 3], {a: 0, b: 4}, {a: 0, b: 4, c: 5}]],
   ['empty object/array', {a: {}, b: []}, [{}, [], {a: 0, b: 1}]],
+  ['date', {a: new Date("2021-03-31T18:34:09.000Z")}, [new Date("2021-03-31T18:34:09.000Z"), {a: 0}]],
 ];
 
 baseCases.forEach(([description, uncrunched, crunched]) => {
