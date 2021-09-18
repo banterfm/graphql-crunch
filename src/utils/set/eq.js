@@ -1,9 +1,11 @@
-const { isArray, isObject } = require('../containers');
+const { isArray, isObject } = require("../containers");
 
 function eq(a, b) {
-  return isArray(a) && isArray(b) ? arrayEq(a, b)
-       : isObject(a) && isObject(b) ? objectEq(a, b)
-       : a === b;
+  return isArray(a) && isArray(b)
+    ? arrayEq(a, b)
+    : isObject(a) && isObject(b)
+    ? objectEq(a, b)
+    : a === b;
 }
 
 function arrayEq(a, b) {

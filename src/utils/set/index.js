@@ -1,12 +1,12 @@
-const { hash } = require('./hash');
-const { eq } = require('./eq');
+const { hash } = require("./hash");
+const { eq } = require("./eq");
 
 function CountedOrderedSet() {
   const index = {};
   const values = [];
   const counts = [];
 
-  const add = value => {
+  const add = (value) => {
     const key = hash(value);
 
     if (!(key in index)) {
@@ -17,7 +17,7 @@ function CountedOrderedSet() {
     }
 
     const entries = index[key];
-    const entry = entries.find(x => eq(x[0], value));
+    const entry = entries.find((x) => eq(x[0], value));
 
     if (entry != null) {
       const offset = entry[1];

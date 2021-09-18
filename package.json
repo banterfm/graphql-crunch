@@ -7,7 +7,10 @@
   "scripts": {
     "test": "jest --coverage",
     "watch": "jest --watchAll --coverage",
-    "bench": "node bench/bench.js"
+    "bench": "node bench/bench.js",
+    "format": "yarn prettier --write --ignore-unknown .",
+    "check-format": "yarn prettier --check --ignore-unknown .",
+    "add-hooks": "git config core.hooksPath .githooks"
   },
   "repository": {
     "type": "git",
@@ -30,10 +33,15 @@
   "bugs": {
     "url": "https://github.com/banterfm/graphql-crunch/issues"
   },
+  "lint-staged": {
+    "*": "prettier --write --ignore-unknown --no-error-on-unmatched-pattern"
+  },
   "homepage": "https://github.com/banterfm/graphql-crunch#readme",
   "devDependencies": {
     "jest": "^26.4.2",
+    "lint-staged": "^11.1.2",
     "msgpack-lite": "^0.1.26",
+    "prettier": "^2.4.1",
     "transit-js": "^0.8.861"
   },
   "jest": {
