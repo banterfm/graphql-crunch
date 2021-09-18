@@ -1,4 +1,4 @@
-name: Build, Test, Deploy
+name: Build & Test
 
 on:
   push:
@@ -28,3 +28,6 @@ jobs:
 
       - name: Run tests
         run: yarn test
+
+      - name: Check code style
+        run: yarn check-format
