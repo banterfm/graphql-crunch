@@ -9,16 +9,16 @@ On [Banter.fm](https://banter.fm), we see a 76% reduction in raw JSON size and
 a 30% reduction in gzip'd size. This leads to reduced transfer time and faster
 JSON parsing on mobile.
 
-* [Client support](#client-support)
-* [Installation](#installation)
-* [How does it work?](#how-does-it-work)
-* [Motivation](#motivation)
-* [Example](#example)
-  * [Small Example](#small-example)
-  * [Large Example](#large-example)
-* [Usage](#usage)
-  * [Server-side](#server-side)
-  * [Client-side](#client-side)
+- [Client support](#client-support)
+- [Installation](#installation)
+- [How does it work?](#how-does-it-work)
+- [Motivation](#motivation)
+- [Example](#example)
+  - [Small Example](#small-example)
+  - [Large Example](#large-example)
+- [Usage](#usage)
+  - [Server-side](#server-side)
+  - [Client-side](#client-side)
 
 ## Client support
 
@@ -32,13 +32,13 @@ this in a GraphQL environment.
 This library is distributed on `npm`. In order to add it as a dependency,
 run the following command:
 
-``` sh
+```sh
 $ npm install graphql-crunch --save
 ```
 
 or with [Yarn](https://yarnpkg.com):
 
-``` sh
+```sh
 $ yarn add graphql-crunch
 ```
 
@@ -68,31 +68,31 @@ demo](http://graphql.org/swapi-graphql).
 ### Small Example
 
 Using this
-[query](http://graphql.org/swapi-graphql/?query=%7B%0A%20%20allPeople(first%3A%202)%20%7B%0A%20%20%20%20people%20%7B%0A%20%20%20%20%20%20name%0A%20%20%20%20%20%20gender%0A%20%20%20%20%20%20filmConnection(first%3A%202)%20%7B%0A%20%20%20%20%20%20%20%20films%20%7B%0A%20%20%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20%20%20characterConnection(first%3A%202)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20characters%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20gender%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D&operationName=null)
+[query](<http://graphql.org/swapi-graphql/?query=%7B%0A%20%20allPeople(first%3A%202)%20%7B%0A%20%20%20%20people%20%7B%0A%20%20%20%20%20%20name%0A%20%20%20%20%20%20gender%0A%20%20%20%20%20%20filmConnection(first%3A%202)%20%7B%0A%20%20%20%20%20%20%20%20films%20%7B%0A%20%20%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20%20%20characterConnection(first%3A%202)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20characters%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20gender%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D&operationName=null>)
 we'll fetch the first 2 people and their first 2 films and the first 2
 characters in each of those films. We limit the connections to the first two
 items to keep the payload small:
 
 ```graphql
-  {
-    allPeople(first: 2) {
-      people {
-        name
-        gender
-        filmConnection(first: 2) {
-          films {
-            title
-            characterConnection(first: 2) {
-              characters {
-                name
-                gender
-              }
+{
+  allPeople(first: 2) {
+    people {
+      name
+      gender
+      filmConnection(first: 2) {
+        films {
+          title
+          characterConnection(first: 2) {
+            characters {
+              name
+              gender
             }
           }
         }
       }
     }
   }
+}
 ```
 
 We get this response:
@@ -195,17 +195,17 @@ After we crunch it, we get:
     "n/a",
     "C-3PO",
     { "gender": 3, "name": 4 },
-    [ 2, 5 ],
+    [2, 5],
     { "characters": 6 },
     "A New Hope",
     { "characterConnection": 7, "title": 8 },
     "The Empire Strikes Back",
     { "characterConnection": 7, "title": 10 },
-    [ 9, 11 ],
+    [9, 11],
     { "films": 12 },
     { "filmConnection": 13, "gender": 0, "name": 1 },
     { "filmConnection": 13, "gender": 3, "name": 4 },
-    [ 14, 15 ],
+    [14, 15],
     { "people": 16 },
     { "allPeople": 17 }
   ]
@@ -268,10 +268,10 @@ fragment FilmFragment on Film {
 The resulting response from this query is roughly 1MB of JSON (989,946 bytes),
 but with tons of duplication. Here is how crunching impacts the payload size:
 
-|                      | Raw       | Crunched | Improvement |
-|----------------------|-----------|----------|-------------|
-| Size                 | 989,946B  | 28,220B  | 97.1%       |
-| GZip'd Size          | 22,240B   | 5,069B   | 77.2%       |
+|             | Raw      | Crunched | Improvement |
+| ----------- | -------- | -------- | ----------- |
+| Size        | 989,946B | 28,220B  | 97.1%       |
+| GZip'd Size | 22,240B  | 5,069B   | 77.2%       |
 
 This is an admittedly extreme result, but highlights the potential for
 crunching payloads with large amounts of duplication.
@@ -285,28 +285,28 @@ can supply a custom `formatResponse` function. We use this to crunch the `data`
 field of the `response` before sending it over the wire.
 
 ```js
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer } from "apollo-server";
 
 const server = new ApolloServer({
   // schema, context, etc...
   formatResponse: (response) => {
-    if(response.data) {
+    if (response.data) {
       response.data = crunch(response.data);
     }
     return response;
   },
 });
 
-server.listen({port: 80});
+server.listen({ port: 80 });
 ```
 
 To maintain compatibility with clients that aren't expecting crunched payloads,
 we recommend conditioning the crunch on a query param, like so:
 
 ```js
-import url from 'url';
-import querystring from 'querystring';
-import { ApolloServer } from 'apollo-server';
+import url from "url";
+import querystring from "querystring";
+import { ApolloServer } from "apollo-server";
 
 const server = new ApolloServer({
   // schema, context, etc...
@@ -314,7 +314,7 @@ const server = new ApolloServer({
     const parsed = url.parse(options.context.request.url);
     const query = querystring.parse(parsed.query);
 
-    if(query.crunch && response.data) {
+    if (query.crunch && response.data) {
       const version = parseInt(query.crunch) || 1;
       response.data = crunch(response.data, version);
     }
@@ -323,7 +323,7 @@ const server = new ApolloServer({
   },
 });
 
-server.listen({port: 80});
+server.listen({ port: 80 });
 ```
 
 Now only clients that opt-in to crunched payloads via the `?crunch=2` query

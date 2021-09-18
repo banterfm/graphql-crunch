@@ -1,5 +1,5 @@
 module.exports = {
-  ...require('./containers'),
-  ...require('./references'),
-  ...require('./set'),
+  ...require("./containers"),
+  ...require("./references"),
+  ...require("./set"),
 };

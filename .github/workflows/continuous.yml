@@ -11,20 +11,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Setup node
-      uses: actions/setup-node@v1
-      with:
-        node-version: '12.x'
-        registry-url: 'https://registry.npmjs.org'
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+          registry-url: "https://registry.npmjs.org"
 
-    - name: Install yarn
-      run: npm install -g yarn
+      - name: Install yarn
+        run: npm install -g yarn
 
-    - name: Install deps
-      run: yarn install
+      - name: Install deps
+        run: yarn install
 
-    - name: Run tests
-      run: yarn test
+      - name: Run tests
+        run: yarn test

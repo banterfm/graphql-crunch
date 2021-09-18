@@ -1,4 +1,4 @@
-const { isArray, isObject } = require('../containers');
+const { isArray, isObject } = require("../containers");
 
 const MAX_HASHCODE = Math.pow(2, 32);
 
@@ -39,35 +39,28 @@ function hash(value) {
     return FALSE_HASHCODE;
   }
 
-  if (typeof(value) === 'number') {
+  if (typeof value === "number") {
     return intHash(value);
   }
 
   let code = 0;
 
-  if (typeof(value) === 'string') {
-
+  if (typeof value === "string") {
     const upper = Math.min(value.length, MAX_STRING_LEN);
     for (let i = 0; i < upper; i++) {
       code += intHash(i) ^ intHash(value.charCodeAt(i));
     }
-
   } else if (isArray(value)) {
-
-    for(let i = 0; i < value.length; i++) {
+    for (let i = 0; i < value.length; i++) {
       code += intHash(i) ^ hash(value[i]);
     }
-
   } else {
-
     for (const key in value) {
       code += hash(key) ^ hash(value[key]);
     }
-
   }
 
   return code % MAX_HASHCODE;
-
 }
 
 module.exports = { hash };

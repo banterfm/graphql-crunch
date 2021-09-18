@@ -1,25 +1,26 @@
-const { isContainer
-      , isReference
-      , map
-      , forEach
-      , encode
-      , decode
-      , CountedOrderedSet
-      } = require('../utils');
+const {
+  isContainer,
+  isReference,
+  map,
+  forEach,
+  encode,
+  decode,
+  CountedOrderedSet,
+} = require("../utils");
 
 function flatten(data, set) {
   if (!isContainer(data)) {
     return encode(data);
   }
 
-  const recurse = (data => flatten(data, set));
+  const recurse = (data) => flatten(data, set);
   const flattened = map(data, recurse);
   const position = set.add(flattened);
-  return encode(position, {reference: true});
+  return encode(position, { reference: true });
 }
 
-function compact({values, counts}) {
-  forEach(values, container =>
+function compact({ values, counts }) {
+  forEach(values, (container) =>
     forEach(container, (value, key) => {
       const index = decode(value);
 
