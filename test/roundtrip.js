@@ -3,10 +3,10 @@ const { join } = require("path");
 const { crunch, uncrunch } = require("../src");
 
 const blobs = {
-  "Large SWAPI": join(__dirname, "./json/swapi.json"),
-  "Small SWAPI": join(__dirname, "./json/small.json"),
-  Census: join(__dirname, "./json/census.json"),
-  Businesses: join(__dirname, "./json/businesses.json"),
+  "Large SWAPI": join(__dirname, "../../test/json/swapi.json"),
+  "Small SWAPI": join(__dirname, "../../test/json/small.json"),
+  Census: join(__dirname, "../../test/json/census.json"),
+  Businesses: join(__dirname, "../../test/json/businesses.json"),
 };
 
 Object.keys(blobs).forEach((blob) =>

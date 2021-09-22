@@ -1,0 +1,28 @@
+{
+  "include": ["src/**/*", "test/**/*"],
+  "compilerOptions": {
+    "allowJs": true,
+    "allowUnreachableCode": false,
+    "checkJs": false,
+    "declaration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "importsNotUsedAsValues": "preserve",
+    "incremental": true,
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "./dist/",
+    "pretty": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "target": "ES6"
+  }
+}
