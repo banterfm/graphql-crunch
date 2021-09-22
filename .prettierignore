@@ -7,3 +7,6 @@ dist
 # Ignore big JSON blobs that aren't meant to be read/modified by humans
 bench/json
 test/json
+
+# Ignore Github yaml
+.github
