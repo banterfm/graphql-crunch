@@ -5,10 +5,11 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
-    "test": "yarn build && jest",
-    "watch": "jest --watchAll",
+    "test": "yarn clean && yarn build && yarn jest",
+    "watch": "node ./node_modules/nodemon/bin/nodemon.js --watch src --watch test -e js,ts -x 'yarn test'",
     "bench": "yarn build && node bench/bench.js",
     "build": "./node_modules/typescript/bin/tsc",
+    "jest": "node ./node_modules/jest/bin/jest.js",
     "clean": "rm -rf dist",
     "format": "yarn prettier --write --ignore-unknown .",
     "check-format": "yarn prettier --check --ignore-unknown .",
@@ -43,8 +44,11 @@
     "jest": "^27.2.1",
     "lint-staged": "^11.1.2",
     "msgpack-lite": "^0.1.26",
+    "nodemon": "^2.0.13",
     "prettier": "^2.4.1",
-    "transit-js": "^0.8.861"
+    "transit-js": "^0.8.861",
+    "@types/jest": "^27.0.2",
+    "typescript": "^4.4.3"
   },
   "jest": {
     "testMatch": [
@@ -62,9 +66,5 @@
         "statements": 100
       }
     }
-  },
-  "dependencies": {
-    "@types/jest": "^27.0.2",
-    "typescript": "^4.4.3"
   }
 }
