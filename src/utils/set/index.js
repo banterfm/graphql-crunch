@@ -8,16 +8,8 @@ function CountedOrderedSet() {
 
   const add = (value) => {
     const key = hash(value);
-
-    if (!(key in index)) {
-      index[key] = [[value, values.length]];
-      values.push(value);
-      counts.push(1);
-      return values.length - 1;
-    }
-
     const entries = index[key];
-    const entry = entries.find((x) => eq(x[0], value));
+    const entry = entries?.find((x) => eq(x[0], value));
 
     if (entry != null) {
       const offset = entry[1];
@@ -25,6 +17,7 @@ function CountedOrderedSet() {
       return offset;
     }
 
+    index[key] = index[key] || [];
     index[key].push([value, values.length]);
     values.push(value);
     counts.push(1);
