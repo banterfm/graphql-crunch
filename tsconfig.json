@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*", "test/**/*"],
+  "include": ["src/**/*", "test/**/*", "bench/**/*"],
   "compilerOptions": {
     "allowJs": true,
     "allowUnreachableCode": false,

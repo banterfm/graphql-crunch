@@ -1,6 +1,7 @@
-const { crunch, uncrunch } = require("../../src");
+import { JSON } from "../../src/JSON";
+import { crunch, uncrunch, CrunchedData } from "../../src";
 
-const baseCases = [
+const baseCases: [string, JSON, CrunchedData][] = [
   ["null primitive", null, { version: 2, crunched: [null] }],
   ["number primitive", 0, { version: 2, crunched: [1] }],
   ["boolean primitive", true, { version: 2, crunched: [true] }],

@@ -1,6 +1,6 @@
 // For now, this just covers lines that aren't exercised in the other tests
 
-const { eq } = require("../src/utils/set/eq");
+import { eq } from "../src/utils/set/eq";
 
 test(`Tests different length arrays`, () =>
   expect(eq([1, 2, 3], [1, 2, 3, 4])).toEqual(false));
