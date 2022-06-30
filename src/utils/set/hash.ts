@@ -1,4 +1,4 @@
-const { isArray, isObject } = require("../containers");
+import { isArray, JSON } from "../../JSON";
 
 const MAX_HASHCODE = Math.pow(2, 32);
 
@@ -16,7 +16,7 @@ const FALSE_HASHCODE = 875810931;
  *
  * Returns an unsigned 32-bit number.
  */
-function intHash(x) {
+function intHash(x: number): number {
   x ^= x << 13;
   x ^= x >> 17;
   x ^= x << 5;
@@ -26,7 +26,7 @@ function intHash(x) {
 /**
  * Returns a hashcode for JSON serializable objects.
  */
-function hash(value) {
+export function hash(value: JSON): number {
   if (value === null) {
     return NULL_HASHCODE;
   }
@@ -43,6 +43,10 @@ function hash(value) {
     return intHash(value);
   }
 
+  if (value instanceof Date) {
+    return intHash(value.getTime());
+  }
+
   let code = 0;
 
   if (typeof value === "string") {
@@ -52,15 +56,13 @@ function hash(value) {
     }
   } else if (isArray(value)) {
     for (let i = 0; i < value.length; i++) {
-      code += intHash(i) ^ hash(value[i]);
+      code += intHash(i) ^ hash(value[i]!);
     }
   } else {
     for (const key in value) {
-      code += hash(key) ^ hash(value[key]);
+      code += hash(key) ^ hash(value[key]!);
     }
   }
 
   return code % MAX_HASHCODE;
 }
-
-module.exports = { hash };
